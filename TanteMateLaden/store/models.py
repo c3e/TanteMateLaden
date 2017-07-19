@@ -8,6 +8,7 @@ class Item(models.Model):
     """
     name = models.CharField(max_length=32)
     description = models.TextField()
+    image = models.ImageField(upload_to="uploads/products/")
     ean = models.CharField(max_length=13)  # European Article Number (EAN)
     price = models.DecimalField(max_digits=5, decimal_places=2)  # price in euro
 
