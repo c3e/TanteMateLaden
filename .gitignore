@@ -37,6 +37,15 @@ wheels/
 *.manifest
 *.spec
 
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+media
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
