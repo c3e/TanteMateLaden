@@ -35,6 +35,10 @@ class BasicAccountTestCase(TestCase):
         # check there is one log now
         self.assertEqual(TransactionLog.objects.filter(user=user).count(), 1)
 
+        # add funds as str
+        account.addFunds("15")
+        self.assertEqual(account.balance, 10.0)
+
     def test_BuyItem(self):
         user = User.objects.get(username="testuser")
         account = user.account

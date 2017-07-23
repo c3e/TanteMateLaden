@@ -29,6 +29,7 @@ router.register(r'items', views.ItemViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/(?P<user>[0-9\w-]+)/add/funds/(?P<amount>[0-9.]+)/$', views.AddFundsView),
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
