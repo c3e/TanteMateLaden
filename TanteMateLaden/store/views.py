@@ -2,6 +2,8 @@ from django.shortcuts import render
 from .models import Account, Drink
 from rest_framework import viewsets
 from .serializer import AccountSerializer, DrinkSerializer
+
+
 # Create your views here.
 class AccountViewSet(viewsets.ModelViewSet):
     """

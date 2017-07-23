@@ -1,6 +1,6 @@
-from django.contrib.auth.models import User
-from .models import Account, Drink
 from rest_framework import serializers
+
+from .models import Account, Drink
 
 
 class AccountSerializer(serializers.HyperlinkedModelSerializer):
