@@ -31,7 +31,7 @@ class Account(models.Model):
                 amount = Decimal(amount)
             except InvalidOperation:
                 raise TypeError
-            if not self.no_logs:
+            if (not self.no_logs) or (user_doing is None) or (self.user != user_doing) or (user_authed is False):
                 log = TransactionLog.objects.create(user=self.user, balance_change=amount, ip=ip,
                                                     user_authed=user_authed, user_doing=user_doing)
             self.balance += amount
