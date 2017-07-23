@@ -1,0 +1,152 @@
+[
+    {
+        "model": "store.item",
+        "pk": 1,
+        "fields": {
+            "name": "Club-Mate",
+            "description": "Koffeinhaltiges Erfrischungsgetränk auf Mate-Basis",
+            "image": "",
+            "ean": "4029764001807",
+            "price": "1.50",
+            "slug": "club-mate-05",
+            "creation_date": "2017-07-23T19:41:35.630Z",
+            "creating_user": 1,
+            "last_update": "2017-07-23T19:41:35.630Z",
+            "last_update_user": 1
+        }
+    },
+    {
+        "model": "store.item",
+        "pk": 2,
+        "fields": {
+            "name": "Premium Cola",
+            "description": "Koffeinhaltiges Erfrischungsgetränk auf Cola-Basis",
+            "image": "",
+            "ean": "",
+            "price": "1.50",
+            "slug": "premium-cola-05",
+            "creation_date": "2017-07-23T19:43:12.834Z",
+            "creating_user": 1,
+            "last_update": "2017-07-23T19:43:12.834Z",
+            "last_update_user": 1
+        }
+    },
+    {
+        "model": "store.item",
+        "pk": 3,
+        "fields": {
+            "name": "Rheinfürst Quelle Classic",
+            "description": "Mineralwasser, mit Kohlensäure versetzt.",
+            "image": "",
+            "ean": "4010253835188",
+            "price": "1.00",
+            "slug": "rheinfuerst-quelle-classic-07",
+            "creation_date": "2017-07-23T19:46:12.911Z",
+            "creating_user": 1,
+            "last_update": "2017-07-23T19:46:12.912Z",
+            "last_update_user": 1
+        }
+    },
+    {
+        "model": "store.item",
+        "pk": 4,
+        "fields": {
+            "name": "Flora Mate",
+            "description": "Flora Mate, weniger Kohlensäure, weniger Koffein, etwas mehr Zucker & viel weniger Geschmack",
+            "image": "",
+            "ean": "4260031874056",
+            "price": "1.50",
+            "slug": "flora-mate-05",
+            "creation_date": "2017-07-23T19:48:34.516Z",
+            "creating_user": 1,
+            "last_update": "2017-07-23T19:48:34.516Z",
+            "last_update_user": 1
+        }
+    },
+    {
+        "model": "store.item",
+        "pk": 5,
+        "fields": {
+            "name": "afri cola ohne zucker",
+            "description": "afri cola mit ohne zucker",
+            "image": "",
+            "ean": "",
+            "price": "1.00",
+            "slug": "afri-cola-02",
+            "creation_date": "2017-07-23T19:52:04.456Z",
+            "creating_user": 1,
+            "last_update": "2017-07-23T19:52:04.456Z",
+            "last_update_user": 1
+        }
+    },
+    {
+        "model": "store.item",
+        "pk": 6,
+        "fields": {
+            "name": "Rheinfürst Quelle Medium",
+            "description": "Wasser, mit etwas weniger Kohlensäure schätz ich",
+            "image": "",
+            "ean": "",
+            "price": "1.00",
+            "slug": "rheinfuerst-quelle-medium-07",
+            "creation_date": "2017-07-23T19:54:15.090Z",
+            "creating_user": 1,
+            "last_update": "2017-07-23T19:54:15.090Z",
+            "last_update_user": 1
+        }
+    },
+    {
+        "model": "store.drink",
+        "pk": 1,
+        "fields": {
+            "volume": "0.50",
+            "alcoholic": 0,
+            "caffeine": 200
+        }
+    },
+    {
+        "model": "store.drink",
+        "pk": 2,
+        "fields": {
+            "volume": "0.50",
+            "alcoholic": null,
+            "caffeine": 250
+        }
+    },
+    {
+        "model": "store.drink",
+        "pk": 3,
+        "fields": {
+            "volume": "0.70",
+            "alcoholic": 0,
+            "caffeine": 0
+        }
+    },
+    {
+        "model": "store.drink",
+        "pk": 4,
+        "fields": {
+            "volume": "0.50",
+            "alcoholic": 0,
+            "caffeine": 180
+        }
+    },
+    {
+        "model": "store.drink",
+        "pk": 5,
+        "fields": {
+            "volume": "0.20",
+            "alcoholic": 0,
+            "caffeine": 100
+        }
+    },
+    {
+        "model": "store.drink",
+        "pk": 6,
+        "fields": {
+            "volume": "0.70",
+            "alcoholic": 0,
+            "caffeine": 0
+        }
+    }
+]

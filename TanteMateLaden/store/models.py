@@ -107,7 +107,7 @@ class Item(models.Model):
     name = models.CharField(max_length=32)
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to="uploads/products/", blank=True)
-    ean = models.CharField(max_length=13, blank=True)  # European Article Number (EAN)
+    ean = models.CharField(max_length=13, blank=True, null=True)  # European Article Number (EAN)
     price = models.DecimalField(max_digits=5, decimal_places=2, default=1.5)  # price in euro
     slug = models.SlugField(max_length=64, unique=True)
 
