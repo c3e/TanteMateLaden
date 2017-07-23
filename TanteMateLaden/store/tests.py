@@ -7,8 +7,8 @@ from django.contrib.auth.models import User
 class BasicAccountTestCase(TestCase):
     def setUp(self):
         user = User.objects.create(username="testuser")
-        Item.objects.create(name="Item #1", creating_user=user, last_update_user=user)
-        Item.objects.create(name="Item #2", creating_user=user, last_update_user=user)
+        Item.objects.create(name="Item #1", slug="item-1", creating_user=user, last_update_user=user)
+        Item.objects.create(name="Item #2", slug="item-2", creating_user=user, last_update_user=user)
 
     def test_addingFunds(self):
         user = User.objects.get(username="testuser")

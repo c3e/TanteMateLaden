@@ -69,3 +69,8 @@ def AddFundsView(request, amount, user=None):
                  )
     acc.save()
     return Response(acc.balance)
+
+@api_view(['PUT', 'POST', 'GET'])
+@permission_classes((AllowAny, ))
+def BuyItem(request, user, item_slug, item_amount):
+    pass
