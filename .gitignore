@@ -29,7 +29,7 @@ wheels/
 *.egg
 
 # fronbasals addition
-+.idea/
+.idea/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -41,7 +41,6 @@ wheels/
 *.log
 *.pot
 *.pyc
-__pycache__/
 local_settings.py
 db.sqlite3
 media
@@ -95,11 +94,8 @@ celerybeat-schedule
 *.sage.py
 
 # dotenv
-.env
-
 # virtualenv
 .venv
-venv/
 ENV/
 
 # Spyder project settings
