@@ -4,9 +4,12 @@ from rest_framework import serializers
 
 
 class AccountSerializer(serializers.HyperlinkedModelSerializer):
+    user = serializers.StringRelatedField()
+
     class Meta:
         model = Account
-        fields = ('balance', 'free_access')
+        fields = ('id', 'user', 'avatar', 'balance', 'free_access')
+        depth = 1
 
 
 class DrinkSerializer(serializers.HyperlinkedModelSerializer):
