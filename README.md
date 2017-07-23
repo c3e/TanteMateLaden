@@ -1,2 +1,4 @@
-# TanteMateLaden is a simple Mete/Donatr replacement
-This is a simple system for buying drinks in a hackerspace or anywhere else. This was developed by @CBluoss and @fronbasal in the [Chaospott](https://chaospott.de)
+# TanteMateLaden
+TanteMateLaden is a Mete/Donatr replacement.
+
+This app is built with Django and is currently maintained by CBlouss and fronbasal.
