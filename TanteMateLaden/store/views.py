@@ -9,3 +9,10 @@ class AccountViewSet(viewsets.ModelViewSet):
     """
     queryset = Account.objects.all().order_by('-creation_date')
     serializer_class = AccountSerializer
+
+class DrinkViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows accounts to be viewed or edited.
+    """
+    queryset = Drink.objects.all().order_by('-creation_date')
+    serializer_class = DrinkSerializer

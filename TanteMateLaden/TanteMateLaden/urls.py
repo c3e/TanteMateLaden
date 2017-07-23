@@ -18,6 +18,7 @@ from store import views
 
 router = routers.DefaultRouter()
 router.register(r'accounts', views.AccountViewSet)
+router.register(r'drinks', views.DrinkViewSet)
 
 from django.conf.urls import url, include
 from django.contrib import admin

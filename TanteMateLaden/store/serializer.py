@@ -9,6 +9,7 @@ class AccountSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Account
         fields = ('id', 'user', 'avatar', 'balance', 'free_access')
+        read_only_fields = ('balance', 'free_access')
         depth = 1
 
 
