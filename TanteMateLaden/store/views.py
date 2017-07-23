@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
-from .models import Account
-from .serializer import AccountSerializer
+from .models import Account, Drink
+from .serializer import AccountSerializer, DrinkSerializer
 
 
 # Create your views here.
