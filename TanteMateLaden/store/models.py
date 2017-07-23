@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+
 class Account(models.Model):
     """
     Extends the default user model with specific foo
@@ -13,7 +14,7 @@ class Account(models.Model):
     free_access = models.BooleanField("Zugriff ohne Authentifizierung", default=False)
     no_logs = models.BooleanField("Keine Logs", default=False)
     pin = models.CharField("Optional Pin", max_length=64)
-    balance = models.DecimalField("Guthaben in Euro",max_digits=5, decimal_places=2, default=0)
+    balance = models.DecimalField("Guthaben in Euro", max_digits=5, decimal_places=2, default=0)
     creation_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
@@ -26,7 +27,8 @@ class Account(models.Model):
         """
         if isinstance(amount, (int, float)):
             if not self.no_logs:
-                log = TransactionLog.objects.create(user=self.user, balance_change=amount, ip=ip, user_authed=user_authed)
+                log = TransactionLog.objects.create(user=self.user, balance_change=amount, ip=ip,
+                                                    user_authed=user_authed)
             self.balance += amount
             return True
         else:
@@ -38,11 +40,12 @@ class Account(models.Model):
         returns the new Balance if successful.
         """
         if isinstance(item, int):
-            #get Item instance if id was given
+            # get Item instance if id was given
             item = Item.objects.get(id=item)
         if isinstance(item, Item):
             if not self.no_logs:
-                log = TransactionLog.objects.create(user=self.user, balance_change=item.price, ip=ip, user_authed=user_authed)
+                log = TransactionLog.objects.create(user=self.user, balance_change=item.price, ip=ip,
+                                                    user_authed=user_authed)
             self.balance -= item.price * amount
             return self.balance
         else:
@@ -57,12 +60,14 @@ class Account(models.Model):
         hashing formats behind the scenes.
         Basically a copy of the check_password function from the User model
         """
+
         def setter(raw_pin):
             """
             Incase we need to update the hash and the pin was valid
             """
-            self.set_password(raw_password)
+            self.set_pin(raw_pin)
             self.save(update_fields=["pin"])
+
         return check_password(raw_pin, self.pin, setter)
 
 
@@ -71,6 +76,7 @@ class Account(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Account.objects.create(user=instance)
+
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
@@ -88,6 +94,7 @@ class TransactionLog(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     ip = models.GenericIPAddressField(blank=True, null=True)
 
+
 class Item(models.Model):
     """
     Generic base class for all kinds of items
@@ -99,6 +106,7 @@ class Item(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2, default=1.5)  # price in euro
 
     creation_date = models.DateTimeField(auto_now_add=True)
+
     creating_user = models.ForeignKey(User, related_name="creator")
 
     last_update = models.DateTimeField(auto_now=True)
@@ -112,6 +120,7 @@ class Drink(Item):
     volume = models.DecimalField("Menge in l", max_digits=4, decimal_places=2)
     alcoholic = models.IntegerField(null=True)  # null or % of alcohol
     caffeine = models.IntegerField(null=True)  # caffeine in mg/l
+    slug = models.SlugField(max_length=255, unique=True)
 
     def __str__(self):
         return "%sl %s" % (self.volume, self.name)
