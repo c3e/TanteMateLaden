@@ -24,6 +24,7 @@ from django.contrib import admin
 router = routers.DefaultRouter()
 router.register(r'accounts', views.AccountViewSet)
 router.register(r'drinks', views.DrinkViewSet)
+router.register(r'items', views.ItemViewSet)
 
 
 urlpatterns = [
