@@ -30,6 +30,7 @@ router.register(r'transactions', views.TransactionLogViewSet, 'transactionlog-de
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/(?P<user>[0-9\w-]+)/add/funds/(?P<amount>[0-9.]+)/$', views.AddFundsView),
+    url(r'^accounts/(?P<user_id>[0-9\w-]+)/buy/item/(?P<item_slug>[\w-]+)/(?P<item_amount>[0-9]+)/$', views.BuyItemView),
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
