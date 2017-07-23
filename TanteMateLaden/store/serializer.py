@@ -1,7 +1,7 @@
 from rest_framework import serializers
 # from rest_framework.fields import CurrentUserDefault
 
-from .models import Account, Drink, Item
+from .models import Account, Drink, Item, TransactionLog
 
 
 class AccountSerializer(serializers.HyperlinkedModelSerializer):
@@ -29,3 +29,10 @@ class DrinkSerializer(ItemSerializer):
         model = Drink
         fields = ('name', 'slug', 'price', 'image', 'ean', 'description','volume', 'alcoholic', 'caffeine', 'creating_user', 'creation_date', 'last_update_user', 'last_update')
         depth = 1
+
+class TransactionLogSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()
+    user_doing = serializers.StringRelatedField()
+    class Meta:
+        model = TransactionLog
+        fields = "__all__"

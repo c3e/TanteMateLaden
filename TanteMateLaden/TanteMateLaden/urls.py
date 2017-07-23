@@ -25,7 +25,7 @@ router = routers.DefaultRouter()
 router.register(r'accounts', views.AccountViewSet)
 router.register(r'drinks', views.DrinkViewSet)
 router.register(r'items', views.ItemViewSet)
-
+router.register(r'transactions', views.TransactionLogViewSet, 'transactionlog-detail')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

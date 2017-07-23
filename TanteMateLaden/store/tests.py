@@ -16,7 +16,7 @@ class BasicAccountTestCase(TestCase):
         account.no_logs = True
 
         # add 10 currency
-        account.addFunds(10, user_doing=user, user_authed=True)
+        account.addFunds(10, user_doing=user)
         self.assertEqual(account.balance, 10)
 
         # check there are no logs yet.

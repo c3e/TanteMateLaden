@@ -21,7 +21,7 @@ class Account(models.Model):
     def __str__(self):
         return "%s account (balance: %s)" % (self.user.username, self.balance)
 
-    def addFunds(self, amount=0, ip=None, user_authed=False, user_doing=None):
+    def addFunds(self, amount=0, ip=None, user_doing=None):
         """
         add funds to the account, negative values are allowed.
         """
@@ -31,15 +31,15 @@ class Account(models.Model):
                 amount = Decimal(amount)
             except InvalidOperation:
                 raise TypeError
-            if (not self.no_logs) or (user_doing is None) or (self.user != user_doing) or (user_authed is False):
+            if (not self.no_logs) or (user_doing is None) or (self.user != user_doing):
                 log = TransactionLog.objects.create(user=self.user, balance_change=amount, ip=ip,
-                                                    user_authed=user_authed, user_doing=user_doing)
+                                                    user_doing=user_doing)
             self.balance += amount
             return True
         else:
             raise TypeError
 
-    def buyItem(self, item, amount=1, ip=None, user_authed=False, user_doing=None):
+    def buyItem(self, item, amount=1, ip=None, user_doing=None):
         """
         Buys an item(Object or id) w/ the account, changes the balance accordingly and creates a log entry if wished.models
         returns the new Balance if successful.
@@ -50,7 +50,7 @@ class Account(models.Model):
         if isinstance(item, Item):
             if not self.no_logs:
                 log = TransactionLog.objects.create(user=self.user, balance_change=item.price, ip=ip,
-                                                    user_authed=user_authed, user_doing=user_doing)
+                                                    user_doing=user_doing)
             self.balance -= item.price * amount
             return self.balance
         else:
@@ -96,7 +96,6 @@ class TransactionLog(models.Model):
     user_doing = models.ForeignKey(User, related_name="transactions_did", blank=True, null=True)
     balance_change = models.DecimalField("Guthabenänderung in Euro", max_digits=5, decimal_places=2, default=0)
     comment = models.CharField(max_length=255, blank=True)
-    user_authed = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True)
     ip = models.GenericIPAddressField(blank=True, null=True)
 
