@@ -1,4 +1,5 @@
 from rest_framework import serializers
+# from rest_framework.fields import CurrentUserDefault
 
 from .models import Account, Drink, Item
 
@@ -14,19 +15,17 @@ class AccountSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
-    creating_user = serializers.StringRelatedField()
-    last_update_user = serializers.StringRelatedField()
+    creating_user = serializers.StringRelatedField(default=serializers.CurrentUserDefault())
+    last_update_user = serializers.StringRelatedField(default=serializers.CurrentUserDefault())
     class Meta:
         model = Item
         fields = ('id', 'name', 'description', 'image', 'ean', 'price', 'creating_user', 'creation_date', 'last_update_user', 'last_update')
         depth = 1
 
 
-class DrinkSerializer(serializers.HyperlinkedModelSerializer):
-    creating_user = serializers.StringRelatedField()
-    last_update_user = serializers.StringRelatedField()
 
+class DrinkSerializer(ItemSerializer):
     class Meta:
         model = Drink
-        fields = ('name', 'slug', 'price', 'image', 'ean', 'description', 'alcoholic', 'caffeine', 'creating_user', 'creation_date', 'last_update_user', 'last_update')
+        fields = ('name', 'slug', 'price', 'image', 'ean', 'description','volume', 'alcoholic', 'caffeine', 'creating_user', 'creation_date', 'last_update_user', 'last_update')
         depth = 1
