@@ -16,7 +16,7 @@ Including another URLconf
 from rest_framework import routers
 
 # noinspection PyUnresolvedReferences
-from store import views
+from store import viewse
 
 from django.conf.urls import url, include
 from django.contrib import admin

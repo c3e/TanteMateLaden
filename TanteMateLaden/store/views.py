@@ -1,7 +1,7 @@
-from django.shortcuts import render
-from .models import Account, Drink
 from rest_framework import viewsets
-from .serializer import AccountSerializer, DrinkSerializer
+
+from .models import Account
+from .serializer import AccountSerializer
 
 
 # Create your views here.
