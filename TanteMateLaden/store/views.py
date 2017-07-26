@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from .serializer import AccountSerializer, DrinkSerializer, ItemSerializer, TransactionLogSerializer
 from django.core.exceptions import PermissionDenied
 
+
 @permission_classes((DjangoModelPermissionsOrAnonReadOnly,))
 class AccountViewSet(viewsets.ModelViewSet):
     """
@@ -42,6 +43,7 @@ class AccountViewSet(viewsets.ModelViewSet):
         acc.save()
         return Response({'balance': acc.balance})
 
+
 class DrinkViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows accounts to be viewed or edited.
@@ -73,8 +75,8 @@ class TransactionLogViewSet(viewsets.ReadOnlyModelViewSet):
             return TransactionLog.objects.none()
 
 
-@api_view(['POST','GET', 'PUT', 'PATCH'])
-@permission_classes((AllowAny, ))
+@api_view(['POST', 'GET', 'PUT', 'PATCH'])
+@permission_classes((AllowAny,))
 def BuyItemView(request, item_slug, user_id=None, item_amount=1):
     # this may throw errors if user isnt authed.
     if user_id is not None:
@@ -91,7 +93,7 @@ def BuyItemView(request, item_slug, user_id=None, item_amount=1):
         # we buy for ourselves, no further checks neeeded
         acc.buyItem(item, amount, request.META.get('REMOTE_ADDR'), user_doing)
     else:
-        #all other cases
+        # all other cases
         if acc.free_access:
             comment = "Free access, no auth needed"
         elif pin and acc.check_pin(pin):
@@ -103,4 +105,3 @@ def BuyItemView(request, item_slug, user_id=None, item_amount=1):
         acc.buyItem(item, amount, request.META.get('REMOTE_ADDR'), user_doing, comment)
     acc.save()
     return Response(acc.balance)
-

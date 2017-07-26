@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 from .models import Account, Drink, Item, TransactionLog
 
+
 class AccountSerializer(serializers.HyperlinkedModelSerializer):
     user = serializers.StringRelatedField()
 
@@ -15,22 +16,27 @@ class AccountSerializer(serializers.HyperlinkedModelSerializer):
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
     creating_user = serializers.StringRelatedField(default=serializers.CurrentUserDefault())
     last_update_user = serializers.StringRelatedField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = Item
-        fields = ('id', 'name', 'slug', 'description', 'image', 'ean', 'price', 'creating_user', 'creation_date', 'last_update_user', 'last_update')
+        fields = ('id', 'name', 'slug', 'description', 'image', 'ean', 'price', 'creating_user', 'creation_date',
+                  'last_update_user', 'last_update')
         depth = 1
-
 
 
 class DrinkSerializer(ItemSerializer):
     class Meta:
         model = Drink
-        fields = ('name', 'slug', 'price', 'image', 'ean', 'description','volume', 'alcoholic', 'caffeine', 'creating_user', 'creation_date', 'last_update_user', 'last_update')
+        fields = (
+        'name', 'slug', 'price', 'image', 'ean', 'description', 'volume', 'alcoholic', 'caffeine', 'creating_user',
+        'creation_date', 'last_update_user', 'last_update')
         depth = 1
+
 
 class TransactionLogSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
     user_doing = serializers.StringRelatedField()
+
     class Meta:
         model = TransactionLog
         fields = "__all__"

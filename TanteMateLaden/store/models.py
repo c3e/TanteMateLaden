@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from decimal import Decimal, InvalidOperation
 
+
 class Account(models.Model):
     """
     Extends the default user model with specific foo
@@ -49,7 +50,7 @@ class Account(models.Model):
             item = Item.objects.get(id=item)
         if isinstance(item, Item):
             if not isinstance(user_doing, User):
-                user_doing = None # Anonymous User
+                user_doing = None  # Anonymous User
             if (not self.no_logs) or (user_doing is None) or (self.user != user_doing):
                 log = TransactionLog.objects.create(user=self.user, balance_change=item.price, ip=ip,
                                                     user_doing=user_doing, comment=comment)

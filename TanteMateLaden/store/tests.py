@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from rest_framework.test import force_authenticate, APIRequestFactory, APITestCase
 from rest_framework import status
 
+
 # Create your tests here.
 class BasicAccountTestCase(TestCase):
     def setUp(self):
@@ -82,8 +83,10 @@ class BasicAPITests(APITestCase):
     def test_getAccounts(self):
         url = reverse('account-list')
         response = self.client.get(url, {}, format='json')
-        data = [OrderedDict([('id', 2), ('user', 'admin'), ('avatar', None), ('balance', '0.00'), ('free_access', False)]),
-                OrderedDict([('id', 1), ('user', 'testuser'), ('avatar', None), ('balance', '0.00'), ('free_access', True)])]
+        data = [
+            OrderedDict([('id', 2), ('user', 'admin'), ('avatar', None), ('balance', '0.00'), ('free_access', False)]),
+            OrderedDict(
+                [('id', 1), ('user', 'testuser'), ('avatar', None), ('balance', '0.00'), ('free_access', True)])]
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, data)
