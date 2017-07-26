@@ -30,7 +30,7 @@ router.register(r'buy', views.BuyItemView, 'buyitem')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^buy/item/(?P<item_slug>[\w-]+)/$', views.BuyItemView),
+    url(r'^api/buy/item/(?P<item_slug>[\w-]+)/$', views.BuyItemView),
     url(r'^api/buy/item/(?P<item_slug>[\w-]+)/(?P<item_amount>[0-9]+)/$', views.BuyItemView),
     url(r'^api/buy/item/(?P<user_id>[0-9\w-]+)/(?P<item_slug>[\w-]+)/$', views.BuyItemView),
     url(r'^api/buy/item/(?P<user_id>[0-9\w-]+)/(?P<item_slug>[\w-]+)/(?P<item_amount>[0-9]+)/$', views.BuyItemView),
