@@ -1,7 +1,12 @@
 from django.test import TestCase
+from django.core.urlresolvers import reverse
 from .models import Account, TransactionLog, Item
+from collections import OrderedDict
+from django.dispatch import receiver
+from decimal import Decimal
 from django.contrib.auth.models import User
-
+from rest_framework.test import force_authenticate, APIRequestFactory, APITestCase
+from rest_framework import status
 
 # Create your tests here.
 class BasicAccountTestCase(TestCase):
@@ -62,3 +67,46 @@ class BasicAccountTestCase(TestCase):
         self.assertTrue(account.check_pin("1234"))
         self.assertFalse(account.check_pin("123"))
         self.assertFalse(account.check_pin("12356"))
+
+
+class BasicAPITests(APITestCase):
+    def setUp(self):
+        user = User.objects.create(username="testuser")
+        useracc = user.account
+        useracc.free_access = True
+        useracc.save()
+        admin = User.objects.create(username="admin", is_staff=True, is_superuser=True)
+        Item.objects.create(name="Item #1", slug="item-1", creating_user=user, last_update_user=user)
+        Item.objects.create(name="Item #2", slug="item-2", creating_user=user, last_update_user=user)
+
+    def test_getAccounts(self):
+        url = reverse('account-list')
+        response = self.client.get(url, {}, format='json')
+        data = [OrderedDict([('id', 2), ('user', 'admin'), ('avatar', None), ('balance', '0.00'), ('free_access', False)]),
+                OrderedDict([('id', 1), ('user', 'testuser'), ('avatar', None), ('balance', '0.00'), ('free_access', True)])]
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, data)
+
+    def test_getItems(self):
+        url = reverse('item-list')
+        response = self.client.get(url, {}, format='json')
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_getLogs(self):
+        url = reverse('transactionlog-list')
+        response = self.client.get(url, {}, format='json')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, [])
+
+    def test_buyItemFreeAccess(self):
+        url = reverse('buy-item', kwargs={'user_id': 1, 'item_slug': 'item-1', 'item_amount': 1})
+        response = self.client.get(url, {}, format='json')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(isinstance(response.data, Decimal))
+
+    def test_buyItemNoAccess(self):
+        url = reverse('buy-item', kwargs={'user_id': 2, 'item_slug': 'item-1', 'item_amount': 1})
+        response = self.client.get(url, {}, format='json')
+        self.assertEqual(response.status_code, 403)

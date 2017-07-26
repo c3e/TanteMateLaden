@@ -26,14 +26,13 @@ router.register(r'accounts', views.AccountViewSet)
 router.register(r'drinks', views.DrinkViewSet)
 router.register(r'items', views.ItemViewSet)
 router.register(r'transactions', views.TransactionLogViewSet, 'transactionlog')
-router.register(r'buy', views.BuyItemView, 'buyitem')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/buy/item/(?P<item_slug>[\w-]+)/$', views.BuyItemView),
     url(r'^api/buy/item/(?P<item_slug>[\w-]+)/(?P<item_amount>[0-9]+)/$', views.BuyItemView),
     url(r'^api/buy/item/(?P<user_id>[0-9\w-]+)/(?P<item_slug>[\w-]+)/$', views.BuyItemView),
-    url(r'^api/buy/item/(?P<user_id>[0-9\w-]+)/(?P<item_slug>[\w-]+)/(?P<item_amount>[0-9]+)/$', views.BuyItemView),
+    url(r'^api/buy/item/(?P<user_id>[0-9\w-]+)/(?P<item_slug>[\w-]+)/(?P<item_amount>[0-9]+)/$', views.BuyItemView, name='buy-item'),
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

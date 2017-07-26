@@ -48,6 +48,8 @@ class Account(models.Model):
             # get Item instance if id was given
             item = Item.objects.get(id=item)
         if isinstance(item, Item):
+            if not isinstance(user_doing, User):
+                user_doing = None # Anonymous User
             if (not self.no_logs) or (user_doing is None) or (self.user != user_doing):
                 log = TransactionLog.objects.create(user=self.user, balance_change=item.price, ip=ip,
                                                     user_doing=user_doing, comment=comment)

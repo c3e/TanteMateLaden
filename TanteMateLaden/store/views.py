@@ -42,38 +42,6 @@ class AccountViewSet(viewsets.ModelViewSet):
         acc.save()
         return Response({'balance': acc.balance})
 
-
-    # @detail_route(methods=['post', 'get'], url_path='buy/item/(?P<item_id>[0-9]+)/(?P<item_amount>[0-9]+)', permission_classes=[AllowAny])
-    # def BuyItem(request, item_id, item_amount=1, pk=None):
-    #     # this may throw errors if user isnt authed.
-    #     if pk is not None:
-    #         user = User.objects.get(id=int(pk))
-    #     else:
-    #         user = request.user
-    #     user_doing = request.user or None
-    #     item = Item.objects.get(pk=item_id[0])
-    #     print(item)
-    #     amount = int(item_amount)
-    #     pin = request.data.get('pin', False)
-    #     acc = user.account
-
-    #     if user == user_doing:
-    #         # we buy for ourselves, no further checks neeeded
-    #         acc.buyItem(item, amount, request.META.get('REMOTE_ADDR'), user_doing)
-    #     else:
-    #     #all other cases
-    #         if acc.free_access:
-    #             comment = "Free access, no auth needed"
-    #         elif pin and acc.check_pin(pin):
-    #             comment = "Legitimated by PIN"
-    #         elif user_doing.is_staff:
-    #             comment = "Legitimated by admin privileges"
-    #         else:
-    #             raise PermissionDenied
-    #         acc.buyItem(item, amount, request.META.get('REMOTE_ADDR'), user_doing, comment)
-    #     acc.save()
-    #     return Response(acc.balance)
-
 class DrinkViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows accounts to be viewed or edited.
@@ -103,34 +71,6 @@ class TransactionLogViewSet(viewsets.ReadOnlyModelViewSet):
             return TransactionLog.objects.filter(user=self.request.user).order_by('-date')
         else:
             return TransactionLog.objects.none()
-
-
-# legacy view. will be removed any time soon.
-# @api_view(['PUT', 'POST', 'GET'])
-# @permission_classes((AllowAny, ))
-# def AddFundsView(request, amount, user=None):
-#     """
-#     Add Funds to an account. Respects the no_logs of the receiving user.
-#     If no username provided and user authed, funds will be added to own account
-#     Returns the new account balance
-#     """
-#     if request.user.is_authenticated and user is None:
-#         user = request.user
-#     else:
-#         try:
-#             acc = Account.objects.get(id=int(user))
-#         except ValueError:  # user wasnt a account id
-#             user = User.objects.get(username=user)
-#             acc = user.account
-#     amount = float(amount)
-
-#     acc.addFunds(amount,
-#                  ip=request.META.get('REMOTE_ADDR'),
-#                  user_authed=request.user.is_authenticated,
-#                  user_doing=request.user
-#                  )
-#     acc.save()
-#     return Response(acc.balance)
 
 
 @api_view(['POST','GET', 'PUT', 'PATCH'])
