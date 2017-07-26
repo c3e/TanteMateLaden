@@ -10,10 +10,10 @@ class Account(models.Model):
     Extends the default user model with specific foo
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to="uploads/avatars/")
+    avatar = models.ImageField(upload_to="uploads/avatars/", blank=True, null=True)
     free_access = models.BooleanField("Zugriff ohne Authentifizierung", default=False)
     no_logs = models.BooleanField("Keine Logs", default=False)
-    pin = models.CharField("Optional Pin", max_length=64)
+    pin = models.CharField("Optional Pin", max_length=64, blank=True, null=True)
     balance = models.DecimalField("Guthaben in Euro", max_digits=5, decimal_places=2, default=0)
     creation_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
