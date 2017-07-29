@@ -3,11 +3,16 @@ from rest_framework.decorators import api_view, permission_classes, detail_route
 from rest_framework.permissions import AllowAny, DjangoModelPermissionsOrAnonReadOnly
 from rest_framework.response import Response
 from .models import Account, Drink, Item, TransactionLog
-from django.contrib.auth.models import User
 from .serializer import AccountSerializer, DrinkSerializer, ItemSerializer, TransactionLogSerializer
 from django.core.exceptions import PermissionDenied
 
+from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
+from django.http import Http404
+from django.shortcuts import render, redirect
 
+# REST API VIEWS
 @permission_classes((DjangoModelPermissionsOrAnonReadOnly,))
 class AccountViewSet(viewsets.ModelViewSet):
     """
@@ -105,3 +110,27 @@ def BuyItemView(request, item_slug, user_id=None, item_amount=1):
         acc.buyItem(item, amount, request.META.get('REMOTE_ADDR'), user_doing, comment)
     acc.save()
     return Response(acc.balance)
+
+
+def templateView(request):
+    """ just the empty layout template for development"""
+    return render(request, 'layout.html')
+
+def signup(request):
+    """ register a new account, auth him and return to / """
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('/')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {'form': form})
+
+def indexView(request):
+    """right now just the empty layout template"""
+    return render(request, 'layout.html')

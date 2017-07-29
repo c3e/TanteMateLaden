@@ -18,8 +18,11 @@ from rest_framework import routers
 # noinspection PyUnresolvedReferences
 from store import views
 
+from django.conf.urls.static import static
+from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
 router.register(r'accounts', views.AccountViewSet)
@@ -28,7 +31,11 @@ router.register(r'items', views.ItemViewSet)
 router.register(r'transactions', views.TransactionLogViewSet, 'transactionlog')
 
 urlpatterns = [
+    url('^$', views.indexView, name='index'),
+    url('^', include('django.contrib.auth.urls')),
+    url(r'^signup/$', views.signup, name='signup'),
     url(r'^admin/', admin.site.urls),
+    url(r'^template/', views.templateView),
     url(r'^api/buy/item/(?P<item_slug>[\w-]+)/$', views.BuyItemView),
     url(r'^api/buy/item/(?P<item_slug>[\w-]+)/(?P<item_amount>[0-9]+)/$', views.BuyItemView),
     url(r'^api/buy/item/(?P<user_id>[0-9\w-]+)/(?P<item_slug>[\w-]+)/$', views.BuyItemView),
@@ -36,3 +43,8 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
+
+if True:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

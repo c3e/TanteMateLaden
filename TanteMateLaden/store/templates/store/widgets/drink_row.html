@@ -1,0 +1,26 @@
+<row>
+{% for drink in drinks %}
+	<div class="col-md-3">
+		<div class="panel panel-default">
+			<div class="panel-heading">{{ drink.name }}</div>
+			<div class="panel-body">
+				{% if drink.image %}
+					<img src="{{ drink.image.url }}" style="max-width: 100%">
+				{% endif %}
+				<p>{{ drink.description }}</p>
+				<ul>
+					<li>{{ drink.price }}€</li>
+					<li>{{ drink.volume }}l</li>
+					<li>{{ drink.alcoholic }}% alcohol</li>
+					<li>{{ drink.caffeine }}mg/l caffeine</li>
+				</ul>
+			</div>
+			<div class="panel-footer">
+				<a class="btn btn-primary btn-block">
+					Kaufen
+				</a>
+			</div>
+		</div>
+	</div>
+{% endfor %}
+<row>
