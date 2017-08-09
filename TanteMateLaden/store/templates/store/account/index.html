@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% load bootstrap %}
+{% block title %}Account Info{% endblock %}
+{% block jumbo %} {% endblock %}
+{% block content %}
+	<form class="form">
+		<h2>Account Info</h2>
+		<div class="row">
+			<div class="col-md-4">
+				{{userform|bootstrap}}
+			</div>
+			<div class="col-md-4">
+				{{accform|bootstrap}}
+			</div>
+			<div class="col-md-4">
+				{{pinform|bootstrap}}
+				<hr>
+				{{pwform|bootstrap}}
+				<div class="pull-right">
+				<button type="reset" class="btn btn-default">Reset</button>
+				<button type="submit" class="btn btn-primary">Speichern</button>
+				</div>
+			</div>
+		</div>
+	</form>
+{% endblock %}

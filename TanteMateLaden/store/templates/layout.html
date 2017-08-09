@@ -35,7 +35,16 @@
         <div id="navbar" class="navbar-collapse collapse">
           {% if request.user.is_authenticated %}
             <ul class="nav navbar-nav navbar-right">
-              <li><a>Guthaben aufladen</a></li>
+                  <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Guthaben aufladen <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a onclick="addFunds({{request.user.id}}, 5)">5€</a></li>
+                    <li><a onclick="addFunds({{request.user.id}}, 10)">10€</a></li>
+                    <li><a onclick="addFunds({{request.user.id}}, 20)">20€</a></li>
+                    <li><a onclick="addFunds({{request.user.id}}, 50)">50€</a></li>
+                    <li><a onclick="addFunds({{request.user.id}}, 100)">100€</a></li>
+                  </ul>
+                </li>
               <li><a>Angemeldet als {{ request.user.username }}</a></li>
               <li><a href="{% url 'logout' %}"><i class="glyphicon glyphicon-off"></i></a>
             </ul>
@@ -79,17 +88,77 @@
         <script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>
         <script src="{% static 'js/main.js' %}"></script>
         <script type="text/javascript">
-          function addAlert(message, type) {
-              $('#alerts').prepend(
-                  '<div class="alert alert-' + type + ' alert-dismissable">'+
-                      '<button type="button" class="close" ' +
-                              'data-dismiss="alert" aria-hidden="true">' +
-                          '&times;' +
-                      '</button>' +
-                      message +
-                   '</div>');
-          };
+        function addAlert(message, type) {
+        $('#alerts').prepend(
+        '<div class="alert alert-' + type + ' alert-dismissable">'+
+          '<button type="button" class="close" ' +
+          'data-dismiss="alert" aria-hidden="true">' +
+          '&times;' +
+          '</button>' +
+          message +
+        '</div>');
+        };
+        function buyItem(user, itemSlug) {
+        // e.g. http://localhost:8000/api/buy/item/3/club-mate-05/
+        $.getJSON( '/api/buy/item/' + user + '/' + itemSlug + '/', function( data ) {
+        addAlert(data.item + ' gekauft. Neues Guthaben von <b>' + data.user + '</b>: ' + data.balance + 'Euro.', 'success');
+        });
+        }
+        function buyItemWithPin() {
+        // e.g. http://localhost:8000/api/buy/item/3/club-mate-05/
+        user = $('#pinUser').val();
+        itemSlug = $('#pinItemSlug').val();
+        pin = $('#pinPin').val();
+        $.getJSON( '/api/buy/item/' + user + '/' + itemSlug + '/', {pin: pin},function( data ) {
+          addAlert(data.item + ' mit Pin gekauft. Neues Guthaben von <b>' + data.user + '</b>: ' + data.balance + 'Euro.', 'success');
+        }).error(function() {
+          addAlert('Kauf fehlgeschlagen. Pin korrekt?', 'danger');
+         });
+        //close modals, reset pin field
+        $('#pinPin').val('');
+        $('#pinModal').modal('hide');
+        $('#buy-' + itemId).modal('hide');
+        }
+        function buyItemBtn(user, itemSlug, itemId) {
+        buyItem(user, itemSlug);
+        $('#buy-' + itemId).modal('hide');
+        }
+        function buyItemWithPinBtn1(user, itemSlug, itemId) {
+        $('#pinUser').val(user);
+        $('#pinItemSlug').val(itemSlug);
+        $('#pinItemId').val(itemId);
+        $('#pinModal').modal('show');
+        }
 
+        function addFunds(user, amount) {
+        //api/accounts/1/add/funds/10/
+        $.getJSON( '/api/accounts/' + user + '/add/funds/' + amount + '/', function( data ) {
+                  addAlert('Guthaben mit ' + amount + '€ aufgeladen. Aktuelles Guthaben: ' + data.balance, 'success');
+                });
+        }
         </script>
+        <!-- PIN Modal -->
+        <div class="modal fade" id="pinModal" tabindex="-1" role="dialog" aria-labelledby="pinModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="pinModalLabel">PIN eingeben</h4>
+              </div>
+              <div class="modal-body">
+                <form id="pinform">
+                  <input class="form-control input-lg" id="pinPin" type="password" placeholder="PIN">
+                  <input type="hidden" value="" id="pinUser">
+                  <input type="hidden" value="" id="pinItemId">
+                  <input type="hidden" value="" id="pinItemSlug">
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="buyItemWithPin()">Kaufen</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </body>
     </html>

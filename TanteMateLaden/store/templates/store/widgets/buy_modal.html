@@ -8,12 +8,16 @@
       </div>
       <div class="modal-body">
         {% if user.is_authenticated %}
-        <a type="button" class="btn btn-primary btn-block" onclick="addAlert('You bought no {{item.name}}', 'success')"><b>Für mich kaufen</b></a>
+        <a type="button" class="btn btn-primary btn-block" onclick="buyItemBtn({{user.pk}}, '{{item.slug}}', {{item.pk}})"><b>Für mich kaufen</b></a>
         {% endif %}
         <br>
         <h4>Für andere kaufen</h4>
           {% for acc in accounts %}
-            <a type="button" style="padding-bottom: 10px;" class="btn btn-warning btn-block"><b>Für {{acc.user.username}} kaufen</b></a>
+            {% if acc.free_access %}
+            <a type="button" onclick="buyItemBtn({{acc.user_id}}, '{{item.slug}}', {{item.pk}})" style="padding-bottom: 10px;" class="btn btn-warning btn-block"><b>Für {{acc.user.username}} kaufen</b></a>
+            {% else %}
+            <a type="button" style="padding-bottom: 10px;" class="btn btn-warning btn-block" onclick="buyItemWithPinBtn1({{acc.user_id}}, '{{item.slug}}', {{item.pk}})""><b>Für {{acc.user.username}} kaufen (Pin nötig)</b></a>
+            {% endif %}
           {% endfor %}
       </div>
       <div class="modal-footer">

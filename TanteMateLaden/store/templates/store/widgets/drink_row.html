@@ -3,12 +3,11 @@
 {% for drink in drinks %}
 	<div class="col-md-3">
 		<div class="panel panel-default">
-			<div class="panel-heading">{{ drink.name }}</div>
+			<div class="panel-heading" data-toggle="tooltip" title="{{ drink.description }}">{{ drink.name }}</div>
 			<div class="panel-body">
 				{% if drink.image %}
 					<img src="{{ drink.image.url }}" style="max-width: 100%">
 				{% endif %}
-				<p>{{ drink.description }}</p>
 				<ul>
 					<li>{{ drink.price }}€</li>
 					<li>{{ drink.volume }}l</li>

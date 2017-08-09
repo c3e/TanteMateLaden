@@ -34,6 +34,7 @@ urlpatterns = [
     url('^$', views.indexView, name='index'),
     url('^', include('django.contrib.auth.urls')),
     url(r'^signup/$', views.signup, name='signup'),
+    url(r'^account/$', views.accountView, name='account-index'),
     url(r'^admin/', admin.site.urls),
     url(r'^template/', views.templateView),
     url(r'^api/buy/item/(?P<item_slug>[\w-]+)/$', views.BuyItemView),

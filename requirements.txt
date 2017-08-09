@@ -1,5 +1,6 @@
 django
 djangorestframework
+django-bootstrap-form
 markdown
 django-filter
 Pillow
