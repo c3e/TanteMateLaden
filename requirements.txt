@@ -1,6 +1,8 @@
+requests
 django
 djangorestframework
 django-bootstrap-form
+django-debug-toolbar
 markdown
 django-filter
 Pillow

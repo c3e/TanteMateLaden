@@ -3,22 +3,29 @@
 {% block title %}Account Info{% endblock %}
 {% block jumbo %} {% endblock %}
 {% block content %}
-	<form class="form">
 		<h2>Account Info</h2>
 		<div class="row">
+		<form class="form" action="{% url 'account-index' %}" method="post">
+			{% csrf_token %}
 			<div class="col-md-4">
 				{{userform|bootstrap}}
 			</div>
 			<div class="col-md-4">
-				{{accform|bootstrap}}
-			</div>
-			<div class="col-md-4">
 				{{pinform|bootstrap}}
 				<hr>
-				{{pwform|bootstrap}}
+				{{accform|bootstrap}}
 				<div class="pull-right">
 				<button type="reset" class="btn btn-default">Reset</button>
 				<button type="submit" class="btn btn-primary">Speichern</button>
+				</div>
+			</div>
+		</form>
+		<form class="form" action="{% url 'account-index' %}" method="post">
+			{% csrf_token %}
+			<div class="col-md-4">
+				{{pwform|bootstrap}}
+				<div class="pull-right">
+				<button type="submit" class="btn btn-primary">Speichern und neu anmelden.</button>
 				</div>
 			</div>
 		</div>

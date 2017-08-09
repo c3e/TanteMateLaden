@@ -7,6 +7,7 @@ from .forms import AccountForm, UserForm, PinChangeForm
 from .serializer import AccountSerializer, DrinkSerializer, ItemSerializer, TransactionLogSerializer
 from django.core.exceptions import PermissionDenied
 
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
@@ -147,6 +148,28 @@ def accountView(request):
     accountform = AccountForm(instance=request.user.account, prefix="acc")
     pwform = PasswordChangeForm(request.user, prefix="pw")
     pinform = PinChangeForm(prefix="pin")
+    if request.method == 'POST':
+        if 'user-username' in request.POST:
+            userform = UserForm(request.POST, instance=request.user, prefix="user")
+            accountform = AccountForm(request.POST, instance=request.user.account, prefix="acc")
+            pinform = PinChangeForm(request.POST, prefix="pin")
+            if userform.has_changed() and userform.is_valid():
+                userform.save()
+            if accountform.has_changed() and accountform.is_valid():
+                accountform.save()
+                messages.success(request, 'Benutzerprofil aktualisiert')
+            if pinform.has_changed() and pinform.is_valid():
+                pin = pinform.cleaned_data['pin']
+                request.user.account.set_pin(pin)
+                messages.success(request, 'Neuer Pin gespeichert')
+        else:
+            pwform = PasswordChangeForm(request.user,request.POST, prefix="pw")
+            if pwform.is_valid():
+                pwform.save()
+                messages.success(request, 'Neues Passwort gespeichert')
+
+    # set balance read only
+    accountform.fields['balance'].widget.attrs['readonly'] = True
     return render(request, 'store/account/index.html', {'userform': userform,
                                                         'accform': accountform,
                                                         'pwform': pwform,
