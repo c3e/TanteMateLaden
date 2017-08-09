@@ -35,16 +35,16 @@
         <div id="navbar" class="navbar-collapse collapse">
           {% if request.user.is_authenticated %}
             <ul class="nav navbar-nav navbar-right">
-                  <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Guthaben aufladen <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a onclick="addFunds({{request.user.id}}, 5)">5€</a></li>
-                    <li><a onclick="addFunds({{request.user.id}}, 10)">10€</a></li>
-                    <li><a onclick="addFunds({{request.user.id}}, 20)">20€</a></li>
-                    <li><a onclick="addFunds({{request.user.id}}, 50)">50€</a></li>
-                    <li><a onclick="addFunds({{request.user.id}}, 100)">100€</a></li>
-                  </ul>
-                </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Guthaben aufladen <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a onclick="addFunds({{request.user.id}}, 5)">5€</a></li>
+                  <li><a onclick="addFunds({{request.user.id}}, 10)">10€</a></li>
+                  <li><a onclick="addFunds({{request.user.id}}, 20)">20€</a></li>
+                  <li><a onclick="addFunds({{request.user.id}}, 50)">50€</a></li>
+                  <li><a onclick="addFunds({{request.user.id}}, 100)">100€</a></li>
+                </ul>
+              </li>
               <li><a href="{% url 'account-index' %}">Angemeldet als {{ request.user.username }}</a></li>
               <li><a href="{% url 'logout' %}"><i class="glyphicon glyphicon-off"></i></a>
             </ul>
@@ -58,19 +58,19 @@
                 <input type="password" placeholder="Password" name="password" class="form-control">
               </div>
               <button type="submit" class="btn btn-success">Log in</button>
-              <a class="btn btn-default" href={% url 'signup' %}">Registrieren</a>
+              <a class="btn btn-default" href="{% url 'signup' %}">Registrieren</a>
             </form>
           {% endif %}
           </div><!--/.navbar-collapse -->
         </div>
       </nav>
       <div id="alerts">
-          {% for message in messages %}
+        {% for message in messages %}
           <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             {{ message }}
           </div>
-          {% endfor %}
+        {% endfor %}
       </div>
       <!-- Main jumbotron for a primary marketing message or call to action -->
       {% block jumbo %}
@@ -116,10 +116,10 @@
         itemSlug = $('#pinItemSlug').val();
         pin = $('#pinPin').val();
         $.getJSON( '/api/buy/item/' + user + '/' + itemSlug + '/', {pin: pin},function( data ) {
-          addAlert(data.item + ' mit Pin gekauft. Neues Guthaben von <b>' + data.user + '</b>: ' + data.balance + 'Euro.', 'success');
+        addAlert(data.item + ' mit Pin gekauft. Neues Guthaben von <b>' + data.user + '</b>: ' + data.balance + 'Euro.', 'success');
         }).error(function() {
-          addAlert('Kauf fehlgeschlagen. Pin korrekt?', 'danger');
-         });
+        addAlert('Kauf fehlgeschlagen. Pin korrekt?', 'danger');
+        });
         //close modals, reset pin field
         $('#pinPin').val('');
         $('#pinModal').modal('hide');
@@ -135,12 +135,11 @@
         $('#pinItemId').val(itemId);
         $('#pinModal').modal('show');
         }
-
         function addFunds(user, amount) {
         //api/accounts/1/add/funds/10/
         $.getJSON( '/api/accounts/' + user + '/add/funds/' + amount + '/', function( data ) {
-                  addAlert('Guthaben mit ' + amount + '€ aufgeladen. Aktuelles Guthaben: ' + data.balance, 'success');
-                });
+        addAlert('Guthaben mit ' + amount + '€ aufgeladen. Aktuelles Guthaben: ' + data.balance, 'success');
+        });
         }
         </script>
         <!-- PIN Modal -->

@@ -1,10 +1,11 @@
 {% extends 'layout.html' %}
+{% load bootstrap %}
 
 {% block content %}
   <h2>Registrieren</h2>
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Go go shopping!</button>
+    {{ form|bootstrap }}
+    <button type="submit" class="btn btn-primary btn-block">Go go shopping!</button>
   </form>
 {% endblock %}
