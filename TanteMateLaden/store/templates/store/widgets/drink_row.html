@@ -1,4 +1,5 @@
-<row>
+{% load store_widgets %}
+<div class="row">
 {% for drink in drinks %}
 	<div class="col-md-3">
 		<div class="panel panel-default">
@@ -16,11 +17,12 @@
 				</ul>
 			</div>
 			<div class="panel-footer">
-				<a class="btn btn-primary btn-block">
+				<a class="btn btn-primary btn-block" data-toggle="modal" data-target="#buy-{{drink.pk}}">
 					Kaufen
 				</a>
 			</div>
+			{% buy_item_modal drink %}
 		</div>
 	</div>
 {% endfor %}
-<row>
+</div>

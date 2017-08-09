@@ -1,0 +1,24 @@
+<!-- Modal -->
+<div class="modal fade" id="buy-{{item.pk}}" tabindex="-1" role="dialog" aria-labelledby="buy-{{item.pk}}Label">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="buy-{{item.pk}}Label">{{item.name}} kaufen</h4>
+      </div>
+      <div class="modal-body">
+        {% if user.is_authenticated %}
+        <a type="button" class="btn btn-primary btn-block" onclick="addAlert('You bought no {{item.name}}', 'success')"><b>Für mich kaufen</b></a>
+        {% endif %}
+        <br>
+        <h4>Für andere kaufen</h4>
+          {% for acc in accounts %}
+            <a type="button" style="padding-bottom: 10px;" class="btn btn-warning btn-block"><b>Für {{acc.user.username}} kaufen</b></a>
+          {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
