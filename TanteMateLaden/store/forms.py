@@ -1,3 +1,5 @@
+from requests import get
+from django.core.files.base import ContentFile
 from django.contrib.auth.models import User
 from django.forms import ModelForm, URLField, PasswordInput, CharField, Form
 from store.models import Account
@@ -16,3 +18,11 @@ class AccountForm(ModelForm):
     class Meta:
         model = Account
         fields = ['balance', 'free_access', 'no_logs', 'avatar']
+
+    def save(self, commit=True):
+        m = super(AccountForm, self).save(commit=False)
+        if len(self.cleaned_data['avatar_url']) > 5:
+            img_file = ContentFile(get(self.cleaned_data['avatar_url']).content)
+            m.avatar.save(m.user.username +".download", img_file)
+
+        return m
