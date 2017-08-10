@@ -1,27 +1,45 @@
 {% load store_widgets %}
+<h2>Getränke</h2>
 <div class="row">
-{% for drink in drinks %}
-	<div class="col-md-3">
-		<div class="panel panel-default">
-			<div class="panel-heading" data-toggle="tooltip" title="{{ drink.description }}">{{ drink.name }}</div>
-			<div class="panel-body">
-				{% if drink.image %}
-					<img src="{{ drink.image.url }}" style="max-width: 100%">
-				{% endif %}
-				<ul>
-					<li>{{ drink.price }}€</li>
-					<li>{{ drink.volume }}l</li>
-					<li>{{ drink.alcoholic }}% alcohol</li>
-					<li>{{ drink.caffeine }}mg/l caffeine</li>
-				</ul>
+	{% for drink in drinks %}
+		<div class="col-md-3 col-sm-4 col-xs-6">
+			<div class="panel panel-default">
+				<div class="panel-heading" data-toggle="tooltip" title="{{ drink.description }}"><h4 style="margin-top: 0; margin-bottom: 0;"><span class="label label-primary">{{ drink.volume }}l</span> {{ drink.name }}</h4></div>
+				<div class="panel-body" style="padding: 10px;">
+					{% if drink.image %}
+						<img src="{{ drink.image.url }}" class="img-responsive hidden-xs" style="padding-bottom: 10px;">
+					{% endif %}
+					<div class="row">
+						{% if drink.alcoholic > 0 %}
+							<div class="col-md-3"><b>Alkohol</b> </div>
+							<div class="col-md-9">
+								<div class="progress">
+									<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{drink.alcoholic}}" aria-valuemin="0" aria-valuemax="100" style="min-width: 25px; width: {{drink.alcoholic}}%;">
+										{{drink.alcoholic}}%
+									</div>
+								</div>
+							</div>
+						{% endif %}
+						{% if drink.caffeine > 0 %}
+							{% widthratio drink.caffeine 300 100 as width %}
+							<div class="col-md-3"><b>Koffein</b> </div>
+							<div class="col-md-9">
+								<div class="progress">
+									<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{drink.alcoholic}}" aria-valuemin="0" aria-valuemax="300" style="min-width: 50px; width: {{width}}%;">
+										{{drink.caffeine}}mg/l
+									</div>
+								</div>
+							</div>
+						{% endif %}
+					</div>
+				</div>
+				<div class="panel-footer">
+					<a class="btn btn-primary btn-block" data-toggle="modal" data-target="#buy-{{drink.pk}}">
+						Kaufen ({{drink.price}}<i class="glyphicon glyphicon-euro"></i>)
+					</a>
+				</div>
+				{% buy_item_modal drink %}
 			</div>
-			<div class="panel-footer">
-				<a class="btn btn-primary btn-block" data-toggle="modal" data-target="#buy-{{drink.pk}}">
-					Kaufen
-				</a>
-			</div>
-			{% buy_item_modal drink %}
 		</div>
-	</div>
-{% endfor %}
+	{% endfor %}
 </div>

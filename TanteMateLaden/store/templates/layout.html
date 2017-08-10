@@ -1,7 +1,7 @@
 {% load static %}
 {% load store_widgets %}
 <!doctype html>
-<html class="no-js" lang="">
+<html class="no-js" lang="de">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -22,7 +22,7 @@
   </head>
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
+      <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
           <span class="sr-only">Toggle navigation</span>
@@ -45,7 +45,15 @@
                   <li><a onclick="addFunds({{request.user.id}}, 100)">100€</a></li>
                 </ul>
               </li>
-              <li><a href="{% url 'account-index' %}">Angemeldet als {{ request.user.username }}</a></li>
+              <li><a href="{% url 'account-index' %}">
+                {% if request.user.account.avatar %}
+  <img src="{{ request.user.account.avatar.url }}" style="
+  max-height: 48px;
+  margin-top: -15px;
+  margin-bottom: -15px;
+  ">{% endif %}
+
+Angemeldet als <b>{{ request.user.username }}</b></a></li>
               <li><a href="{% url 'logout' %}"><i class="glyphicon glyphicon-off"></i></a>
             </ul>
           {% else %}
@@ -74,19 +82,39 @@
       </div>
       <!-- Main jumbotron for a primary marketing message or call to action -->
       {% block jumbo %}
+        {% comment %}
         <div class="jumbotron">
-          <div class="container">
+          <div class="container-fluid">
             <h1>Heisser, schwarzer Kaffee.</h1>
             <p>Kaffee ist leider gerade aus aber kuck dich ruhig um und nimm' dir ne Mate.</p>
           </div>
         </div>
+        {% endcomment %}
       {% endblock %}
-      <div class="container">
+      <div class="container-fluid">
         {% block content %}
           {% drink_row %}
         {% endblock %}
-        <footer>
-          <p>&copy; deinkoks & fronbasal @ foobar e.V.</p>
+      </div>
+        <footer style="background-color: #ccc">
+          <div class="container-fluid">
+            <div class="row">
+            <div class="col-md-4">
+              &copy; <a href="https://twitter.com/deinkoks">deinkoks</a> & <a href="https://twitter.com/fronbasalpub">fronbasal</a> @ <a href="https://chaospott.de">foobar e.V.</a>
+            </div>
+
+            <div class="col-md-8">
+              <span class="pull-right">
+              {% if request.user.is_staff %}
+              <a href="/admin/">Administration</a> |
+              {% endif %}
+              <a href="/api/">API</a> |
+              <a href="https://github.com/c3e/TanteMateLaden">Github</a>
+              </span>
+            </div>
+
+            </div>
+          </div>
         </footer>
         </div> <!-- /container -->
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

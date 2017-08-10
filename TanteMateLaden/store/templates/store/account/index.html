@@ -3,9 +3,17 @@
 {% block title %}Account Info{% endblock %}
 {% block jumbo %} {% endblock %}
 {% block content %}
-		<h2>Account Info</h2>
-		<div class="row">
-		<form class="form" action="{% url 'account-index' %}" method="post">
+	<h2>
+	{% if request.user.account.avatar %}
+	<img src="{{ request.user.account.avatar.url }}" style="
+	max-height: 50px;
+	max-width: 50px;
+	margin-right: 10px;
+	margin-bottom: 30px;
+	" class="img-thumbnail">{% endif %}
+	Account Info</h2>
+	<div class="row">
+		<form class="form" enctype="multipart/form-data" action="{% url 'account-index' %}" method="post">
 			{% csrf_token %}
 			<div class="col-md-4">
 				{{userform|bootstrap}}
@@ -15,8 +23,8 @@
 				<hr>
 				{{accform|bootstrap}}
 				<div class="pull-right">
-				<button type="reset" class="btn btn-default">Reset</button>
-				<button type="submit" class="btn btn-primary">Speichern</button>
+					<button type="reset" class="btn btn-default">Reset</button>
+					<button type="submit" class="btn btn-primary">Speichern</button>
 				</div>
 			</div>
 		</form>
@@ -25,7 +33,7 @@
 			<div class="col-md-4">
 				{{pwform|bootstrap}}
 				<div class="pull-right">
-				<button type="submit" class="btn btn-primary">Speichern und neu anmelden.</button>
+					<button type="submit" class="btn btn-primary">Speichern und neu anmelden.</button>
 				</div>
 			</div>
 		</div>

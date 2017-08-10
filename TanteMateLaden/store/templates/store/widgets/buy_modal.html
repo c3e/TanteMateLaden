@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="buy-{{item.pk}}" tabindex="-1" role="dialog" aria-labelledby="buy-{{item.pk}}Label">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -9,16 +9,41 @@
       <div class="modal-body">
         {% if user.is_authenticated %}
         <a type="button" class="btn btn-primary btn-block" onclick="buyItemBtn({{user.pk}}, '{{item.slug}}', {{item.pk}})"><b>Für mich kaufen</b></a>
-        {% endif %}
-        <br>
+          <br>
         <h4>Für andere kaufen</h4>
+        {% endif %}
+        <div class="row">
           {% for acc in accounts %}
-            {% if acc.free_access %}
-            <a type="button" onclick="buyItemBtn({{acc.user_id}}, '{{item.slug}}', {{item.pk}})" style="padding-bottom: 10px;" class="btn btn-warning btn-block"><b>Für {{acc.user.username}} kaufen</b></a>
+          <div class="col-md-4 col-sm-4 col-xs-6">
+            <div style="height: 80px; margin-bottom: 10px;" class="col-md-4">
+            {% if acc.avatar %}
+                        {% if acc.free_access %}
+            <a onclick="buyItemBtn({{acc.user_id}}, '{{item.slug}}', {{item.pk}})" >
             {% else %}
-            <a type="button" style="padding-bottom: 10px;" class="btn btn-warning btn-block" onclick="buyItemWithPinBtn1({{acc.user_id}}, '{{item.slug}}', {{item.pk}})""><b>Für {{acc.user.username}} kaufen (Pin nötig)</b></a>
+             <a onclick="buyItemWithPinBtn1({{acc.user_id}}, '{{item.slug}}', {{item.pk}})"">
             {% endif %}
+            <img src="{{ acc.avatar.url }}" style="
+              max-height: 80px;
+              max-width: 80px;
+              margin-right: 10px;
+              border-radius: 4px;
+              " >
+              </a>
+            {% else %}
+            <span style="font-size: 70px;" class="glyphicon glyphicon-user"></span>
+            {% endif %}
+            </div>
+            <div class="col-md-8">
+            {% if acc.free_access %}
+            <a onclick="buyItemBtn({{acc.user_id}}, '{{item.slug}}', {{item.pk}})" ><h3>{{acc.user.username}} </h3></a>
+            {% else %}
+            <span class="label label-info pull-right">PIN</span>
+            <a onclick="buyItemWithPinBtn1({{acc.user_id}}, '{{item.slug}}', {{item.pk}})""><h3> {{acc.user.username}}</h3></a>
+            {% endif %}
+            </div>
+          </div>
           {% endfor %}
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

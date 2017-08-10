@@ -151,7 +151,7 @@ def accountView(request):
     if request.method == 'POST':
         if 'user-username' in request.POST:
             userform = UserForm(request.POST, instance=request.user, prefix="user")
-            accountform = AccountForm(request.POST, instance=request.user.account, prefix="acc")
+            accountform = AccountForm(request.POST, request.FILES, instance=request.user.account, prefix="acc")
             pinform = PinChangeForm(request.POST, prefix="pin")
             if userform.has_changed() and userform.is_valid():
                 userform.save()
