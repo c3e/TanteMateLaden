@@ -6,7 +6,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django.http import Http404
 from django.db.models import Count, Avg
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view, permission_classes, detail_route
@@ -135,7 +135,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('/')
+            return redirect(reverse('index'))
     else:
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
@@ -150,38 +150,40 @@ def indexView(request):
 
 
 def accountView(request):
-    userform = UserForm(instance=request.user, prefix="user")
-    accountform = AccountForm(instance=request.user.account, prefix="acc")
-    pwform = PasswordChangeForm(request.user, prefix="pw")
-    pinform = PinChangeForm(prefix="pin")
-    transactions = request.user.transactionlog_set.order_by('-id')
-    if request.method == 'POST':
-        if 'user-username' in request.POST:
-            userform = UserForm(request.POST, instance=request.user, prefix="user")
-            accountform = AccountForm(request.POST, request.FILES, instance=request.user.account, prefix="acc")
-            pinform = PinChangeForm(request.POST, prefix="pin")
-            if userform.has_changed() and userform.is_valid():
-                userform.save()
-            if accountform.has_changed() and accountform.is_valid():
-                accountform.save()
-                messages.success(request, 'Benutzerprofil aktualisiert')
-            if pinform.has_changed() and pinform.is_valid():
-                pin = pinform.cleaned_data['pin']
-                request.user.account.set_pin(pin)
-                messages.success(request, 'Neuer Pin gespeichert')
-        else:
-            pwform = PasswordChangeForm(request.user,request.POST, prefix="pw")
-            if pwform.is_valid():
-                pwform.save()
-                messages.success(request, 'Neues Passwort gespeichert')
-
-    # set balance read only
-    accountform.fields['balance'].widget.attrs['readonly'] = True
-    return render(request, 'store/account/index.html', {'userform': userform,
-                                                        'accform': accountform,
-                                                        'pwform': pwform,
-                                                        'pinform': pinform,
-                                                        'transactions': transactions})
+    if request.user.is_authenticated():
+        userform = UserForm(instance=request.user, prefix="user")
+        accountform = AccountForm(instance=request.user.account, prefix="acc")
+        pwform = PasswordChangeForm(request.user, prefix="pw")
+        pinform = PinChangeForm(prefix="pin")
+        transactions = request.user.transactionlog_set.order_by('-id')
+        if request.method == 'POST':
+            if 'user-username' in request.POST:
+                userform = UserForm(request.POST, instance=request.user, prefix="user")
+                accountform = AccountForm(request.POST, request.FILES, instance=request.user.account, prefix="acc")
+                pinform = PinChangeForm(request.POST, prefix="pin")
+                if userform.has_changed() and userform.is_valid():
+                    userform.save()
+                if accountform.has_changed() and accountform.is_valid():
+                    accountform.save()
+                    messages.success(request, 'Benutzerprofil aktualisiert')
+                if pinform.has_changed() and pinform.is_valid():
+                    pin = pinform.cleaned_data['pin']
+                    request.user.account.set_pin(pin)
+                    messages.success(request, 'Neuer Pin gespeichert')
+            else:
+                pwform = PasswordChangeForm(request.user,request.POST, prefix="pw")
+                if pwform.is_valid():
+                    pwform.save()
+                    messages.success(request, 'Neues Passwort gespeichert')
+        # set balance read only
+        accountform.fields['balance'].widget.attrs['readonly'] = True
+        return render(request, 'store/account/index.html', {'userform': userform,
+                                                            'accform': accountform,
+                                                            'pwform': pwform,
+                                                            'pinform': pinform,
+                                                            'transactions': transactions})
+    else:
+        return redirect(reverse('index'))
 
 def statsView(request):
     total_logs = TransactionLog.objects.count()

@@ -40,6 +40,7 @@
         <div id="navbar" class="navbar-collapse collapse">
           {% if request.user.is_authenticated %}
             <ul class="nav navbar-nav navbar-right">
+              <li><a href="{% url 'stats' %}">Stats</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Guthaben aufladen <span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -56,11 +57,11 @@
               </li>
               <li><a href="{% url 'account-index' %}">
                 {% if request.user.account.avatar %}
-  <img src="{{ request.user.account.avatar.url }}" style="
-  max-height: 48px;
-  margin-top: -15px;
-  margin-bottom: -15px;
-  ">{% endif %}
+                <img src="{{ request.user.account.avatar.url }}" style="
+                max-height: 48px;
+                margin-top: -15px;
+                margin-bottom: -15px;
+                ">{% endif %}
 
 Angemeldet als <b>{{ request.user.username }}</b></a></li>
               <li><a href="{% url 'logout' %}"><i class="glyphicon glyphicon-off"></i></a>

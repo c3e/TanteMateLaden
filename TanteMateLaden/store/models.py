@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 from decimal import Decimal, InvalidOperation
 
 
@@ -78,6 +79,20 @@ class Account(models.Model):
             self.save(update_fields=["pin"])
 
         return check_password(raw_pin, self.pin, setter)
+
+    def last_day(self):
+        now = timezone.now()
+        transactions = self.user.transactionlog_set.filter(date__year=now.year,
+                         date__month=now.month,
+                         date__day=now.day)
+        items = transactions.exclude(item=None)
+        drinks = transactions.exclude(item__drink=None)
+        money_spend = items.aggregate(models.Sum('balance_change'))['balance_change__sum']
+        drinks = {'transactions': drinks}
+        drinks['volume'] = drinks['transactions'].aggregate(models.Sum('item__drink__volume'))['item__drink__volume__sum']
+        return {'transactions': transactions, 'spend': money_spend, 'drinks':drinks}
+
+
 
 
 # hook to the create/save methods of auth.models.User
