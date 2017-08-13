@@ -35,6 +35,7 @@ urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^account/$', views.accountView, name='account-index'),
+    url(r'^stats/$', views.statsView, name='stats'),
     url(r'^admin/', admin.site.urls),
     url(r'^template/', views.templateView),
     url(r'^api/buy/item/(?P<item_slug>[\w-]+)/$', views.BuyItemView),
@@ -45,11 +46,10 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 
-if True:
+if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-if settings.DEBUG:
+    #add debug_toolbar urls
     import debug_toolbar
     urlpatterns = [
         url(r'^__debug__/', include(debug_toolbar.urls)),

@@ -1,18 +1,21 @@
-from rest_framework import viewsets, status
-from rest_framework.decorators import api_view, permission_classes, detail_route
-from rest_framework.permissions import AllowAny, DjangoModelPermissionsOrAnonReadOnly
-from rest_framework.response import Response
-from .models import Account, Drink, Item, TransactionLog
-from .forms import AccountForm, UserForm, PinChangeForm
-from .serializer import AccountSerializer, DrinkSerializer, ItemSerializer, TransactionLogSerializer
 from django.core.exceptions import PermissionDenied
-
 from django.contrib import messages
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django.http import Http404
+from django.db.models import Count, Avg
 from django.shortcuts import render, redirect
+
+from rest_framework import viewsets, status
+from rest_framework.decorators import api_view, permission_classes, detail_route
+from rest_framework.permissions import AllowAny, DjangoModelPermissionsOrAnonReadOnly
+from rest_framework.response import Response
+
+from .models import Account, Drink, Item, TransactionLog
+from .forms import AccountForm, UserForm, PinChangeForm
+from .serializer import AccountSerializer, DrinkSerializer, ItemSerializer, TransactionLogSerializer
 
 # REST API VIEWS
 
@@ -140,6 +143,9 @@ def signup(request):
 
 def indexView(request):
     """right now just the empty layout template"""
+    if request.META['REMOTE_ADDR'] in settings.PUBLIC_TERMINAL_IPS:
+        # Limit session length on public devices
+        request.session.set_expiry(settings.PUBLIC_SESSION_LENGTH)
     return render(request, 'layout.html')
 
 
@@ -148,6 +154,7 @@ def accountView(request):
     accountform = AccountForm(instance=request.user.account, prefix="acc")
     pwform = PasswordChangeForm(request.user, prefix="pw")
     pinform = PinChangeForm(prefix="pin")
+    transactions = request.user.transactionlog_set.order_by('-id')
     if request.method == 'POST':
         if 'user-username' in request.POST:
             userform = UserForm(request.POST, instance=request.user, prefix="user")
@@ -173,4 +180,11 @@ def accountView(request):
     return render(request, 'store/account/index.html', {'userform': userform,
                                                         'accform': accountform,
                                                         'pwform': pwform,
-                                                        'pinform': pinform})
+                                                        'pinform': pinform,
+                                                        'transactions': transactions})
+
+def statsView(request):
+    total_logs = TransactionLog.objects.count()
+    total_item_logs = TransactionLog.objects.exclude(item=None).count()
+    item_sales = Item.objects.annotate(num_sales=Count('transactionlog')).exclude(num_sales=0).order_by('-num_sales')
+    return render(request, 'store/stats.html', {'trans_total': total_logs, 'total_item_sales': total_item_logs, 'items': item_sales})

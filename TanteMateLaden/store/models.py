@@ -22,7 +22,7 @@ class Account(models.Model):
     def __str__(self):
         return "%s account (balance: %s)" % (self.user.username, self.balance)
 
-    def addFunds(self, amount=0, ip=None, user_doing=None, comment=None):
+    def addFunds(self, amount=0, ip=None, user_doing=None, comment="Aufladung"):
         """
         add funds to the account, negative values are allowed.
         """
@@ -52,8 +52,9 @@ class Account(models.Model):
             if not isinstance(user_doing, User):
                 user_doing = None  # Anonymous User
             if (not self.no_logs) or (user_doing is None) or (self.user != user_doing):
-                log = TransactionLog.objects.create(user=self.user, balance_change=item.price, ip=ip,
-                                                    user_doing=user_doing, comment=comment)
+                log = TransactionLog.objects.create(user=self.user, balance_change=item.price*-1, ip=ip,
+                                                    user_doing=user_doing, comment=comment,
+                                                    item=item, item_amount=amount)
             self.balance -= item.price * amount
             return self.balance
         else:
@@ -91,18 +92,6 @@ def save_user_profile(sender, instance, **kwargs):
     instance.account.save()
 
 
-class TransactionLog(models.Model):
-    """
-    Transaction log entry
-    """
-    user = models.ForeignKey(User)
-    user_doing = models.ForeignKey(User, related_name="transactions_did", blank=True, null=True)
-    balance_change = models.DecimalField("Guthabenänderung in Euro", max_digits=5, decimal_places=2, default=0)
-    comment = models.CharField(max_length=255, blank=True, null=True)
-    date = models.DateTimeField(auto_now_add=True)
-    ip = models.GenericIPAddressField(blank=True, null=True)
-
-
 class Item(models.Model):
     """
     Generic base class for all kinds of items
@@ -126,8 +115,21 @@ class Item(models.Model):
 
 class Drink(Item):
     volume = models.DecimalField("Menge in l", max_digits=4, decimal_places=2)
-    alcoholic = models.IntegerField("Alkoholgehalt in %", null=True)  # null or % of alcohol
+    alcoholic = models.DecimalField("Alkoholgehalt in %", max_digits=2, decimal_places=1, null=True)  # null or % of alcohol
     caffeine = models.IntegerField("Koffeingehalt in mg/l", null=True)  # caffeine in mg/l
 
     def __str__(self):
         return "%sl %s" % (self.volume, self.name)
+
+class TransactionLog(models.Model):
+    """
+    Transaction log entry
+    """
+    user = models.ForeignKey(User)
+    user_doing = models.ForeignKey(User, related_name="transactions_did", blank=True, null=True)
+    balance_change = models.DecimalField("Guthabenänderung in Euro", max_digits=5, decimal_places=2, default=0)
+    item = models.ForeignKey(Item, blank=True, null=True, default=None)
+    item_amount = models.IntegerField(blank=True, null=True, default=None)
+    comment = models.CharField(max_length=255, blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+    ip = models.GenericIPAddressField(blank=True, null=True)

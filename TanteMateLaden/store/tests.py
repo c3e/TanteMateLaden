@@ -106,8 +106,9 @@ class BasicAPITests(APITestCase):
     def test_buyItemFreeAccess(self):
         url = reverse('buy-item', kwargs={'user_id': 1, 'item_slug': 'item-1', 'item_amount': 1})
         response = self.client.get(url, {}, format='json')
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(isinstance(response.data, Decimal))
+        expected_response = {'item': 'Item #1', 'balance': Decimal('-1.50'), 'user': 'testuser'}
+        self.assertEqual(response.status_code, 202)
+        self.assertEqual(response.data, expected_response)
 
     def test_buyItemNoAccess(self):
         url = reverse('buy-item', kwargs={'user_id': 2, 'item_slug': 'item-1', 'item_amount': 1})

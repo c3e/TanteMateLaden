@@ -1,7 +1,5 @@
 {% extends 'layout.html' %}
 {% load bootstrap %}
-{% block title %}Account Info{% endblock %}
-{% block jumbo %} {% endblock %}
 {% block content %}
 	<h2>
 	{% if request.user.account.avatar %}
@@ -38,4 +36,24 @@
 			</div>
 		</div>
 	</form>
+
+	<h2>Transaktionen</h2>
+	<table class="table table-bordered">
+	<thead>
+		<th>ID</th>
+		<th>Item</th>
+		<th>Balance Change</th>
+		<th>Beschreibung</th>
+	</thead>
+	<tbody>
+	{% for trans in transactions %}
+	<tr>
+	<td>{{trans.id}}</td>
+	<td>{% if trans.item %}{{trans.item}}{% endif %}</td>
+	<td>{{trans.balance_change}}</td>
+	<td>{{trans.comment}}</td>
+	</tr>
+	{% endfor %}
+	</tbody>
+	</table>
 {% endblock %}

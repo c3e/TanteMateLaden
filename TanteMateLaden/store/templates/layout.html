@@ -15,6 +15,11 @@
     padding-top: 50px;
     padding-bottom: 20px;
     }
+
+    .progress-bar-left {
+      text-align: left;
+      text-indent: 0.5em;
+    }
     </style>
     <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
@@ -38,11 +43,15 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Guthaben aufladen <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><a onclick="addFunds({{request.user.id}}, 5)">5€</a></li>
-                  <li><a onclick="addFunds({{request.user.id}}, 10)">10€</a></li>
-                  <li><a onclick="addFunds({{request.user.id}}, 20)">20€</a></li>
-                  <li><a onclick="addFunds({{request.user.id}}, 50)">50€</a></li>
-                  <li><a onclick="addFunds({{request.user.id}}, 100)">100€</a></li>
+                  <li><a onclick="addFunds({{request.user.account.id}}, 0.5)">0,50€</a></li>
+                  <li><a onclick="addFunds({{request.user.account.id}}, 2)">1€</a></li>
+                  <li><a onclick="addFunds({{request.user.account.id}}, 1.5)">1,50€</a></li>
+                  <li><a onclick="addFunds({{request.user.account.id}}, 2)">2€</a></li>
+                  <li><a onclick="addFunds({{request.user.account.id}}, 5)">5€</a></li>
+                  <li><a onclick="addFunds({{request.user.account.id}}, 10)">10€</a></li>
+                  <li><a onclick="addFunds({{request.user.account.id}}, 20)">20€</a></li>
+                  <li><a onclick="addFunds({{request.user.account.id}}, 50)">50€</a></li>
+                  <li><a onclick="addFunds({{request.user.account.id}}, 100)">100€</a></li>
                 </ul>
               </li>
               <li><a href="{% url 'account-index' %}">
@@ -166,7 +175,7 @@ Angemeldet als <b>{{ request.user.username }}</b></a></li>
         function addFunds(user, amount) {
         //api/accounts/1/add/funds/10/
         $.getJSON( '/api/accounts/' + user + '/add/funds/' + amount + '/', function( data ) {
-        addAlert('Guthaben mit ' + amount + '€ aufgeladen. Aktuelles Guthaben: ' + data.balance, 'success');
+        addAlert('Guthaben mit ' + amount + '€ aufgeladen. Aktuelles Guthaben: ' + data.balance + '€', 'success');
         });
         }
         </script>
