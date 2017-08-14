@@ -90,6 +90,8 @@ class Account(models.Model):
         money_spend = items.aggregate(models.Sum('balance_change'))['balance_change__sum']
         drinks = {'transactions': drinks}
         drinks['volume'] = drinks['transactions'].aggregate(models.Sum('item__drink__volume'))['item__drink__volume__sum']
+        drinks['caffeine'] = drinks['transactions'].aggregate(caffeine=models.Sum(models.F('item__drink__volume')*models.F('item__drink__caffeine')))['caffeine']
+
         return {'transactions': transactions, 'spend': money_spend, 'drinks':drinks}
 
 

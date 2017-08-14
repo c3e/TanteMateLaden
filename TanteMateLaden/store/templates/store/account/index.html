@@ -1,5 +1,6 @@
 {% extends 'layout.html' %}
 {% load bootstrap %}
+{% load static %}
 {% block content %}
 	<h2>
 	{% if request.user.account.avatar %}
@@ -42,31 +43,50 @@
 	<h2>Heute</h2>
 	<p>
 	{% with request.user.account.last_day as stats %}
-	Ausgegeben: {{stats.spend}}€<br>
-	Getrunken: {{stats.drinks.volume}}l
+	Ausgegeben: {{stats.spend|default_if_none:"0"}}€<br>
+	Getrunken: {{stats.drinks.volume|default_if_none:"0"}}l<br>
+	Koffein: {{stats.drinks.caffeine|default_if_none:"0"}}mg
 	</p>
 	{% endwith %}
 	</div>
 	<div class="col-md-8">
 	<h2>Transaktionen</h2>
-	<table class="table table-bordered">
+	<table class="table table-bordered" id="transactiontable">
 	<thead>
-		<th>ID</th>
+		<th>Datum</th>
 		<th>Item</th>
 		<th>Balance Change</th>
 		<th>Beschreibung</th>
+		<th>Benutzer</th>
 	</thead>
 	<tbody>
 	{% for trans in transactions %}
 	<tr>
-	<td>{{trans.id}}</td>
+	<td>{{trans.date}}</td>
 	<td>{% if trans.item %}{{trans.item}}{% endif %}</td>
 	<td>{{trans.balance_change}}</td>
-	<td>{{trans.comment}}</td>
+	<td>{{trans.comment|default_if_none:""}}</td>
+	<td>{{trans.user_doing|default_if_none:"Anonym"}}</td>
 	</tr>
 	{% endfor %}
 	</tbody>
 	</table>
 	</div>
 	</div>
+{% endblock %}
+
+{% block scripts %}
+{{block.super}}
+<script src="{% static 'js/vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'js/vendor/datatables/dataTables.bootstrap.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/datatables/dataTables.bootstrap.css' %}"/>
+<script type="text/javascript">
+	$(document).ready(function() {
+				$('#transactiontable').DataTable({
+				            "language": {
+				                "url": "{% static 'js/vendor/datatables/german.json' %}"
+				            }
+				        });
+			} )
+</script>
 {% endblock %}

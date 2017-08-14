@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h2>(Logged) Transactions</h2>
+<p>
+Total: {{trans_total}}
+
+</p>
+
+<h2>Verkäufe</h2>
+{% for item in items %}
+{% widthratio item.num_sales total_item_sales 100 as width %}
+<div class="progress">
+  <div class="progress-bar progress-bar-left" role="progressbar" aria-valuenow="{{width}}" aria-valuemin="0" aria-valuemax="100" style="min-width: 14em; width: {{width}}%">
+    {{item.name}} {{width}}%
+  </div>
+</div>
+{% endfor %}
+{% endblock %}
