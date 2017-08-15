@@ -23,7 +23,7 @@ class AccountForm(ModelForm):
 
     def clean_avatar(self):
         cleaned_data = self.cleaned_data['avatar']
-        if cleaned_data is not None:
+        if cleaned_data not in [None, False]:
             if cleaned_data.size > 5242880:  #8MB
                 raise ValidationError("Bild zu groß (>8MB", 'FILE_TO_LARGE')
         return cleaned_data
@@ -42,4 +42,6 @@ class AccountForm(ModelForm):
             except OSError:
                 #linked url looks not like an image
                 raise ValidationError('URL ist kein Bild', 'URL_NO_IMAGE')
+            except AttributeError:
+                raise ValidationError('Erst einmalig ein Bild uploaden', 'NO_PREV_IMAGE')
         return cleaned_data
