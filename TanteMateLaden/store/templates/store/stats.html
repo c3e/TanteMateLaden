@@ -1,18 +1,29 @@
 {% extends 'layout.html' %}
+{% load store_widgets %}
 {% block content %}
-<h2>(Logged) Transactions</h2>
-<p>
-Total: {{trans_total}}
-
-</p>
-
+	{% comment %}
+	<h2>(Logged) Transactions</h2>
+	<p>
+		Total: {{trans_total}}
+	</p>
+{% endcomment %}
 <h2>Verkäufe</h2>
-{% for item in items %}
-{% widthratio item.num_sales total_item_sales 100 as width %}
-<div class="progress">
-  <div class="progress-bar progress-bar-left" role="progressbar" aria-valuenow="{{width}}" aria-valuemin="0" aria-valuemax="100" style="min-width: 14em; width: {{width}}%">
-    {{item.name}} {{width}}%
-  </div>
+<div class="row">
+	<div class="col-md-6">
+		<h3>Heute</h3>
+		{% stats_sales_today %}
+	</div>
+	<div class="col-md-6">
+		<h3>Letzte Woche</h3>
+		{% stats_sales_last_week %}
+	</div>
+	<div class="col-md-6">
+		<h3>Letzter Monat</h3>
+		{% stats_sales_last_month %}
+	</div>
+	<div class="col-md-6">
+		<h3>Insgesamt</h3>
+		{% stats_sales %}
+	</div>
 </div>
-{% endfor %}
 {% endblock %}

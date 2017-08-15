@@ -143,9 +143,9 @@ def signup(request):
 
 def indexView(request):
     """right now just the empty layout template"""
-    if request.META['REMOTE_ADDR'] in settings.PUBLIC_TERMINAL_IPS:
-        # Limit session length on public devices
-        request.session.set_expiry(settings.PUBLIC_SESSION_LENGTH)
+    if request.META['REMOTE_ADDR'] not in settings.PUBLIC_TERMINAL_IPS:
+        # Unlimit session length on private devices
+        request.session.set_expiry(0)
     return render(request, 'layout.html')
 
 

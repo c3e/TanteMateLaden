@@ -1,0 +1,10 @@
+{% for item in sales %}
+{% widthratio item.num_sales total_item_sales 100 as width %}
+<div class="progress">
+  <div class="progress-bar progress-bar-left" role="progressbar" aria-valuenow="{{width}}" aria-valuemin="0" aria-valuemax="100" style="min-width: 14em; width: {{width}}%">
+    {{item.name}} {{width}}%
+  </div>
+</div>
+{% endfor %}
+<hr>
+<p>Insgesamt: {{total_item_sales}}</p>
