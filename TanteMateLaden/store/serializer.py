@@ -28,7 +28,7 @@ class DrinkSerializer(ItemSerializer):
     class Meta:
         model = Drink
         fields = (
-        'name', 'slug', 'price', 'image', 'ean', 'description', 'volume', 'alcoholic', 'caffeine', 'creating_user',
+        'name', 'slug', 'price', 'image', 'ean', 'description', 'volume', 'alcohol', 'caffeine', 'creating_user',
         'creation_date', 'last_update_user', 'last_update')
         depth = 1
 

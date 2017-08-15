@@ -100,7 +100,7 @@
         "pk": 1,
         "fields": {
             "volume": "0.50",
-            "alcoholic": 0,
+            "alcohol": 0,
             "caffeine": 200
         }
     },
@@ -109,7 +109,7 @@
         "pk": 2,
         "fields": {
             "volume": "0.50",
-            "alcoholic": null,
+            "alcohol": null,
             "caffeine": 250
         }
     },
@@ -118,7 +118,7 @@
         "pk": 3,
         "fields": {
             "volume": "0.70",
-            "alcoholic": 0,
+            "alcohol": 0,
             "caffeine": 0
         }
     },
@@ -127,7 +127,7 @@
         "pk": 4,
         "fields": {
             "volume": "0.50",
-            "alcoholic": 0,
+            "alcohol": 0,
             "caffeine": 180
         }
     },
@@ -136,7 +136,7 @@
         "pk": 5,
         "fields": {
             "volume": "0.20",
-            "alcoholic": 0,
+            "alcohol": 0,
             "caffeine": 100
         }
     },
@@ -145,7 +145,7 @@
         "pk": 6,
         "fields": {
             "volume": "0.70",
-            "alcoholic": 0,
+            "alcohol": 0,
             "caffeine": 0
         }
     }

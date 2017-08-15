@@ -10,12 +10,12 @@
 						<img src="{{ drink.image.url }}" class="img-responsive hidden-xs" style="padding-bottom: 10px;">
 					{% endif %}
 					<div class="row">
-						{% if drink.alcoholic > 0 %}
+						{% if drink.alcohol > 0 %}
 							<div class="col-md-3"><b>Alkohol</b> </div>
 							<div class="col-md-9">
 								<div class="progress">
-									<div class="progress-bar progress-bar-warning progress-bar-left" role="progressbar" aria-valuenow="{{drink.alcoholic}}" aria-valuemin="0" aria-valuemax="100" style="min-width: 3em; width: {{drink.alcoholic}}%;">
-										{{drink.alcoholic}}%
+									<div class="progress-bar progress-bar-warning progress-bar-left" role="progressbar" aria-valuenow="{{drink.alcohol}}" aria-valuemin="0" aria-valuemax="100" style="min-width: 3em; width: {{drink.alcohol}}%;">
+										{{drink.alcohol}}%
 									</div>
 								</div>
 							</div>
@@ -25,7 +25,7 @@
 							<div class="col-md-3"><b>Koffein</b> </div>
 							<div class="col-md-9">
 								<div class="progress">
-									<div class="progress-bar progress-bar-info progress-bar-left" role="progressbar" aria-valuenow="{{drink.alcoholic}}" aria-valuemin="0" aria-valuemax="300" style="min-width: 4em; width: {{width}}%;">
+									<div class="progress-bar progress-bar-info progress-bar-left" role="progressbar" aria-valuenow="{{drink.alcohol}}" aria-valuemin="0" aria-valuemax="300" style="min-width: 4em; width: {{width}}%;">
 										{{drink.caffeine}}mg/l
 									</div>
 								</div>

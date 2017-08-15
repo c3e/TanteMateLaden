@@ -132,7 +132,7 @@ class Item(models.Model):
 
 class Drink(Item):
     volume = models.DecimalField("Menge in l", max_digits=4, decimal_places=2)
-    alcoholic = models.DecimalField("Alkoholgehalt in %", max_digits=2, decimal_places=1, null=True)  # null or % of alcohol
+    alcohol = models.DecimalField("Alkoholgehalt in %", max_digits=3, decimal_places=1, null=True)  # null or % of alcohol
     caffeine = models.IntegerField("Koffeingehalt in mg/l", null=True)  # caffeine in mg/l
 
     def __str__(self):

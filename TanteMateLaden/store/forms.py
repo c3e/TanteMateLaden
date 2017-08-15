@@ -23,8 +23,9 @@ class AccountForm(ModelForm):
 
     def clean_avatar(self):
         cleaned_data = self.cleaned_data['avatar']
-        if cleaned_data.size > 5242880:  #8MB
-            raise ValidationError("Bild zu groß (>8MB", 'FILE_TO_LARGE')
+        if cleaned_data is not None:
+            if cleaned_data.size > 5242880:  #8MB
+                raise ValidationError("Bild zu groß (>8MB", 'FILE_TO_LARGE')
         return cleaned_data
 
     def clean(self):
