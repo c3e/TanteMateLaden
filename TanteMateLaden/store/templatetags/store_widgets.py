@@ -14,7 +14,7 @@ def simple_drink_list():
 
 @register.inclusion_tag('store/widgets/drink_row.html', takes_context=True)
 def drink_row(context):
-    drinks = Drink.objects.all()
+    drinks = Drink.objects.all().order_by('name')
     return {'drinks': drinks, 'request': context['request']}
 
 @register.inclusion_tag('store/widgets/buy_modal.html', takes_context=True)
