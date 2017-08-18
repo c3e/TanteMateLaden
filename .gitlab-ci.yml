@@ -1,0 +1,8 @@
+image: python:3.5
+
+all_tests:
+  script:
+   - sh ./scripts/install.sh
+   - python3 TanteMateLaden/manage.py test -k
+  when: on_success
+ 
