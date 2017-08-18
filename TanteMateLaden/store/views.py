@@ -169,6 +169,7 @@ def accountView(request):
                 if pinform.has_changed() and pinform.is_valid():
                     pin = pinform.cleaned_data['pin']
                     request.user.account.set_pin(pin)
+                    request.user.account.save()
                     messages.success(request, 'Neuer Pin gespeichert')
             else:
                 pwform = PasswordChangeForm(request.user,request.POST, prefix="pw")
